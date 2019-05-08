@@ -144,6 +144,7 @@ def training_loop(
 
     # Load training set.
     training_set = dataset.load_dataset(data_dir=config.data_dir, verbose=True, **dataset_args)
+    sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
     # Construct networks.
     with tf.device('/gpu:0'):
