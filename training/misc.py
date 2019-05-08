@@ -194,6 +194,14 @@ def apply_mirror_augment(minibatch):
 # Size and contents of the image snapshot grids that are exported
 # periodically during training.
 
+def locate_latest_pkl():
+    allpickles = sorted(glob.glob(os.path.join(config.result_dir, '0*', 'network-*.pkl')))
+    latest_pickle = allpickles[-1]
+    resume_run_id = os.path.basename(os.path.dirname(latest_pickle))
+    RE_KIMG = re.compile('network-snapshot-(\d+).pkl')
+    kimg = int(RE_KIMG.match(os.path.basename(latest_pickle)).group(1))
+    return (locate_network_pkl(resume_run_id), float(kimg))
+
 def setup_snapshot_image_grid(G, training_set,
     size    = '1080p',      # '1080p' = to be viewed on 1080p display, '4k' = to be viewed on 4k display.
     layout  = 'random'):    # 'random' = grid contents are selected randomly, 'row_per_class' = each row corresponds to one class label.
